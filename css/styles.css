@@ -1,0 +1,13 @@
+body {
+  background-color: #595959;
+  background-image: url('images/background.png');
+}
+
+.rounded-corners {
+  -webkit-border-radius: 10px;
+     -moz-border-radius: 10px;
+          border-radius: 10px;
+}
+
+#main-container {
+}
