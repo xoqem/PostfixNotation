@@ -1,13 +1,15 @@
 PostfixNotation
 ===============
 
-A JavaScript parser / calculator using postfix notation
+A JavaScript parser / calculator using postfix notation.
 
 
 Known Issues:
 -------------
 
 1. jQuery evaluates the string "+2" as a numeric 2.  I'm actually ok with it denoting a positive number, as it is consistent with the negative sign being used to show negative numbers.  So, you can use the / or * immediately before a number, but the + and - will be treated as part of the number if not separated by white space.
+
+2. So far I've tested it in Chrome/Firefox/IE on Windows, Chome/Firefox/Safari on Mac, and on an iPhone.  But please let me know if you find an incompatibility with any browser and OS combo.
 
 
 Project Structure
@@ -21,7 +23,7 @@ The Grunt build process, described in more detail below, concats the application
 Unit Tests
 ----------
 
-The unit tests currently aren't integrated into the build process (because they required setting up PhantomJS and having more info about the build box, which seemed like overkill for this).  For now, you can run them by simply going to the test.html page (which is a sibling of the index.html page) in either the tmp/debug or tmp/release folders.
+The unit tests currently aren't integrated into the build process (because they required setting up PhantomJS and having more info about the build box, which seemed like overkill for this).  For now, you can run them by simply going to the test.html page (which is a sibling of the index.html page) in either the tmp/debug or tmp/release folders.  I tried to cover all the major bases with many tests cases, but do let me know if I missed something that should be added to the test cases.
 
 
 Building:
