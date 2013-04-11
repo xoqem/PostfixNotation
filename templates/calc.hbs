@@ -15,11 +15,12 @@
   {{/if}}
 
   <h1>{{App.calcController.solution}}</h1>
-  {{#if App.calcController.length}}
+  {{#if App.stepController.length}}
     <hr>
     Steps:<br/><br/>
-    {{#each App.calcController}}
-      {{code this}}<br/>
+    {{#each App.stepController}}
+      <b>Step {{index}}:</b> {{leftValue}} {{operator}} {{rightvalue}} = {{result}}<br/>
     {{/each}}
+    <b>Answer:</b> {{App.calcController.solution}}
   {{/if}}
 </div>

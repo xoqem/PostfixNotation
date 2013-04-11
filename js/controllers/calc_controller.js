@@ -1,6 +1,4 @@
-App.calcController = Ember.ArrayController.extend({
-  // content - this will contain our solution steps, bound to an "each" block
-  content: null,
+App.calcController = Ember.Controller.extend({
   // expression - holds the postfix string, bound to the text field
   expression: null,
   // solution - holds the answer, bound to a big label
@@ -17,7 +15,17 @@ App.calcController = Ember.ArrayController.extend({
     this.set('solution', null);
     this.set('error', null);
 
-    var expression = this.get('expression').trim();
+    App.stepController.clear();
+
+    // trim extra space, and escape to make sure we don't open ourselves
+    // up to any JS shenanigans in the expressions box (though Ember /
+    // Handlebars seem to be smart enough not to run JS code in the
+    // templates unless you make a specific helper to do that).
+    var expression = App.StringUtil.escapeHtml(this.get('expression').trim());
+    this.set('expression', expression);
+
+    // since the expression variable will change as we type, we save off the
+    // last expression for error messages
     this.set('lastExpression', expression);
 
     if (!expression) {
@@ -29,6 +37,7 @@ App.calcController = Ember.ArrayController.extend({
     var tokens = expression.split(/\s+/);
     this.fixTokens(tokens);
 
+    var stepNumber = 0;
     var steps = [];
     var stack = [];
     var operators = this.get('operators');
@@ -63,14 +72,17 @@ App.calcController = Ember.ArrayController.extend({
             this.set('error', "Result was not a number: " + result);
             return;
           } else {
-            // create readable step string
-            steps.push([
-              leftValue,
-              operator,
-              rightValue,
-              "=",
-              result
-            ].join(" "));
+            // increment step whenever we process an operator
+            stepNumber++;
+
+            // create the object for this step
+            steps.push(App.Step.create({
+              index: stepNumber,
+              leftValue: leftValue,
+              rightValue: rightValue,
+              operator: operator,
+              result: result
+            }));
 
             // push the result on the stack
             stack.push(result);
@@ -94,8 +106,8 @@ App.calcController = Ember.ArrayController.extend({
 
     this.set('solution', stack.pop());
 
-    this.formatSteps(steps);
-    this.set('content', steps);
+    // pass our steps to the step controller now that the solution was successfully found
+    App.stepController.set('content', steps);
   },
 
   // fixTokens - fix tokens that have numbers and operators with no whitespace
@@ -118,23 +130,6 @@ App.calcController = Ember.ArrayController.extend({
 
         tokens.splice(i, 0, token.substring(0, subEnd));
       }
-    }
-  },
-
-  // formatSteps - formats the steps array exatly as requested
-  formatSteps: function(steps) {
-    steps.push([
-      "<b>Answer:</b> ",
-      this.get('solution')
-    ].join(""));
-    for (var i = 0; i < steps.length - 1; i++)
-    {
-      steps[i] = [
-        "<b>Step ",
-        i + 1,
-        ":</b> ",
-        steps[i]
-      ].join("");
     }
   },
 
