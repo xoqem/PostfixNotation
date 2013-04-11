@@ -16,6 +16,12 @@ App.calcController = Ember.ArrayController.extend({
       //TODO: error - please enter an expression
     }
 
+    // tokenize the expression on white space
+    var tokens = expression.split(/\s+/);
+    this.fixTokens(tokens);
+
+    console.log(tokens.join(","));
+
     // TODO: run through the expression string and add spaces
     //       between numbers and non-numbers for less brittle
     //       parsing
@@ -24,18 +30,14 @@ App.calcController = Ember.ArrayController.extend({
     // TODO: make sure to show an error message if the expression is invalid,
     //       probably determine this while solving
 
-    var i;
     var stack = [];
     var operators = this.get('operators');
-    // tokenize the expression on white space
-    var tokens = expression.split(/\s+/);
+
     // while we have tokens, handle them
     while (tokens.length)
     {
       // get token from beginning of list
       var token = tokens.shift();
-      console.log('Stack:', stack.join(","));
-      console.log('Token:', token);
       // if our token is numeric, push it on the stack
       if ($.isNumeric(token)) {
         stack.push(token);
@@ -48,8 +50,6 @@ App.calcController = Ember.ArrayController.extend({
         // get the left and right values for this operation from the stack
         var rightValue = Number(stack.pop());
         var leftValue = Number(stack.pop());
-        console.log('rightValue:', rightValue);
-        console.log('leftValue:', leftValue);
         // make sure we have a valid operator
         if (operators.has(operator)) {
           // simply get the result from the function in our operators map
@@ -57,7 +57,6 @@ App.calcController = Ember.ArrayController.extend({
           if (isNaN(result)) {
             // TODO: error - result is non-numeric
           } else {
-            console.log('result:', result);
             // create readable step string
             steps.push([
               leftValue,
@@ -84,14 +83,42 @@ App.calcController = Ember.ArrayController.extend({
       // TODO: error, stack is empty, it should have the result in it
     }
 
-    var answer = stack.pop();
+    this.set('solution', stack.pop());
 
-    // format the steps array exatly as requested
+    this.formatSteps(steps);
+    this.set('content', steps);
+  },
+
+  // fixTokens - fix tokens that have numbers and operators with no whitespace
+  fixTokens: function(tokens) {
+    for (var i = tokens.length - 1; i >= 0; i--) {
+      var token = tokens[i];
+      // non-numeric tokens should only be 1 in length if they are operators
+      if (!$.isNumeric(token) && token.length > 1) {
+        // remove the bad token
+        tokens.splice(i, 1);
+
+        var subEnd = token.length;
+        for (var j = token.length - 1; j > 0; j--) {
+          if (!$.isNumeric(token[j]) || !$.isNumeric(token[j - 1])) {
+            // break the string into more tokens at each non-numeric character
+            tokens.splice(i, 0, token.substring(j, subEnd));
+            subEnd = j;
+          }
+        }
+
+        tokens.splice(i, 0, token.substring(0, subEnd));
+      }
+    }
+  },
+
+  // formatSteps - formats the steps array exatly as requested
+  formatSteps: function(steps) {
     steps.push([
       "<b>Answer:</b> ",
-      answer
+      this.get('solution')
     ].join(""));
-    for (i = 0; i < steps.length - 1; i++)
+    for (var i = 0; i < steps.length - 1; i++)
     {
       steps[i] = [
         "<b>Step ",
@@ -100,9 +127,6 @@ App.calcController = Ember.ArrayController.extend({
         steps[i]
       ].join("");
     }
-
-    this.set('solution', answer);
-    this.set('content', steps);
   },
 
   // operators - map of math operators to functions (cachable getter)
@@ -117,6 +141,7 @@ App.calcController = Ember.ArrayController.extend({
       return leftValue - rightValue;
     });
     map.set('/', function(leftValue, rightValue) {
+      // TODO: should we throw an error for divide by zero?
       return leftValue / rightValue;
     });
     map.set('*', function(leftValue, rightValue) {
