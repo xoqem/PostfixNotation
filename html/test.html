@@ -20,29 +20,35 @@
       var runTests = function () {
           module('CalcController');
 
-          testSolveExpression(null, null);
-          testSolveExpression([], null);
-          testSolveExpression({}, null);
-          testSolveExpression("", null);
-          testSolveExpression("a bad string", null);
-          testSolveExpression("+", null);
-          testSolveExpression("*/-+", null);
-          testSolveExpression("7", 7);
-          testSolveExpression("6 8", null);
-          testSolveExpression("3 5 + 3", null);
-          testSolveExpression("4 5 +", 9);
-          testSolveExpression("9 3 /", 3);
-          testSolveExpression("17 8 -", 9);
-          testSolveExpression("6 2 / 5 +", 8);
-          testSolveExpression("6 2 /1 + 2 9 --", 11);
-          testSolveExpression("7 51 22*10 41 + / +", 29);
-          testSolveExpression("4 5 7 2 + - *", -16);
-          testSolveExpression("3 4 + 2  * 7 /", 2);
-          testSolveExpression("5 7 + 6 2 -  * ", 48);
-          testSolveExpression("4 2 3 5 1 - + * +", 18);
-          testSolveExpression("4 2 + 3 5 1 -  * +", 18);
-          testSolveExpression("1 2 /", 0.5);
-          testSolveExpression("4 0 /", Infinity);
+          var tests = [
+            [null, null],
+            [[], null],
+            [{}, null],
+            ["", null],
+            ["a bad string", null],
+            ["+", null],
+            ["*/-+", null],
+            ["7", 7],
+            ["6 8", null],
+            ["3 5 + 3", null],
+            ["4 5 +", 9],
+            ["9 3 /", 3],
+            ["17 8 -", 9],
+            ["6 2 / 5 +", 8],
+            ["6 2 /1 + 2 9 --", 11],
+            ["7 51 22*10 41 + / +", 29],
+            ["4 5 7 2 + - *", -16],
+            ["3 4 + 2  * 7 /", 2],
+            ["5 7 + 6 2 -  * ", 48],
+            ["4 2 3 5 1 - + * +", 18],
+            ["4 2 + 3 5 1 -  * +", 18],
+            ["1 2 /", 0.5],
+            ["4 0 /", Infinity]
+          ];
+
+          for (var i = 0; i < tests.length; i++) {
+            testSolveExpression.apply(this, tests[i]);
+          }
       }
 
       function testSolveExpression(expression, expectedValue) {
