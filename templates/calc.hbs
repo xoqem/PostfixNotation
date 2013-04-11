@@ -1,7 +1,7 @@
 <div id="calc-view" class="rounded-corners">
   <form class="form-horizontal">
     {{view Ember.TextField class="input-xlarge"
-      placeholderBinding="Enter expression here"
+      placeholder="Enter postfix notation expression..."
       valueBinding="App.calcController.expression"
     }}
     <button class="btn btn-primary" {{action "solveExpression" target="App.calcController"}}>Solve</button>
