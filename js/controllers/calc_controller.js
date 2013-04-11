@@ -17,11 +17,15 @@ App.calcController = Ember.Controller.extend({
 
     App.stepController.clear();
 
-    // trim extra space, and escape to make sure we don't open ourselves
+    // make sure we are dealing with a string value
+    expression = this.get('expression');
+    expression = expression ? expression.toString() : "";
+
+    // trim, and also escape to make sure we don't open ourselves
     // up to any JS shenanigans in the expressions box (though Ember /
     // Handlebars seem to be smart enough not to run JS code in the
     // templates unless you make a specific helper to do that).
-    var expression = App.StringUtil.escapeHtml(this.get('expression').trim());
+    var expression = App.StringUtil.escapeHtml(expression.trim());
     this.set('expression', expression);
 
     // since the expression variable will change as we type, we save off the

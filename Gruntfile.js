@@ -43,19 +43,17 @@ module.exports = function(grunt) {
         },
         src: ['js/**/*.js'],
         dest: 'tmp/debug/main.js'
-      },
-      index: {
-        options: {
-          banner: '<%= meta.html_banner %>'
-        },
-        src: ['html/index.html'],
-        dest: 'tmp/debug/index.html'
       }
     },
     copy: {
       images: {
         files: [
           {expand: true, cwd: 'images', src: ['**'], dest: 'tmp/debug/images/'}
+        ]
+      },
+      html: {
+        files: [
+          {expand: true, cwd: 'html', src: ['**'], dest: 'tmp/debug/'}
         ]
       },
       release: {
@@ -83,6 +81,14 @@ module.exports = function(grunt) {
         }
       }
     },
+    qunit: {
+      release: {
+        src: ['tmp/release/test.html']
+      },
+      debug: {
+        src: ['tmp/debug/test.html']
+      }
+    },
     uglify: {
       options: {
         banner: '<%= meta.banner %>'
@@ -108,7 +114,7 @@ module.exports = function(grunt) {
       },
       html: {
         files: 'html/**/*.html',
-        tasks: ['concat:index']
+        tasks: ['copy:html']
       },
       images: {
         files: 'images/**',
@@ -135,6 +141,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-qunit');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-ember-templates');

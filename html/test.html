@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Postfix Calculator - Tests</title>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/qunit/1.11.0/qunit.css">
+
+  <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0-rc.3/handlebars.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/ember.js/1.0.0-rc.2/ember.min.js"></script>
+
+  <link href="./styles.css" rel="stylesheet">
+  <script type="text/javascript" src="./main.js"></script>
+  <script type="text/javascript" src="./templates.js"></script>
+</head>
+<body>
+  <div id="qunit"></div>
+  <script>
+      var runTests = function () {
+          module('CalcController');
+
+          testSolveExpression(null, null);
+          testSolveExpression([], null);
+          testSolveExpression({}, null);
+          testSolveExpression("", null);
+          testSolveExpression("a bad string", null);
+          testSolveExpression("+", null);
+          testSolveExpression("*/-+", null);
+          testSolveExpression("7", 7);
+          testSolveExpression("6 8", null);
+          testSolveExpression("3 5 + 3", null);
+          testSolveExpression("4 5 +", 9);
+          testSolveExpression("6 2 /1 +2 9 --", 11)
+          testSolveExpression("7 51 22*10 41 + / +", 29)
+      }
+
+      function testSolveExpression(expression, expectedValue) {
+        test('my test', function () {
+          App.calcController.set('expression', expression);
+          App.calcController.solveExpression();
+          equal(App.calcController.get('solution'), expectedValue, expression);
+        });
+      }
+  </script>
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/qunit/1.11.0/qunit.min.js" onload="runTests()"></script>
+</body>
+</html>
