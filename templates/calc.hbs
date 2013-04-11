@@ -6,6 +6,13 @@
     }}
     <button class="btn btn-primary" {{action "solveExpression" target="App.calcController"}}>Solve</button>
   </form>
+
+  {{#if App.calcController.error}}
+    <div class="alert alert-error">
+      {{App.calcController.error}}
+    </div>
+  {{/if}}
+
   <h1>{{App.calcController.solution}}</h1>
   {{#if App.calcController.length}}
     <hr>

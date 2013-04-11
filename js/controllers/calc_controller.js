@@ -10,26 +10,19 @@ App.calcController = Ember.ArrayController.extend({
   solveExpression: function() {
     this.set('content', null);
     this.set('solution', null);
+    this.set('error', null);
 
     var expression = this.get('expression');
     if (!expression) {
-      //TODO: error - please enter an expression
+      this.set('error', "Please enter an expression");
+      return;
     }
 
     // tokenize the expression on white space
     var tokens = expression.split(/\s+/);
     this.fixTokens(tokens);
 
-    console.log(tokens.join(","));
-
-    // TODO: run through the expression string and add spaces
-    //       between numbers and non-numbers for less brittle
-    //       parsing
-
     var steps = [];
-    // TODO: make sure to show an error message if the expression is invalid,
-    //       probably determine this while solving
-
     var stack = [];
     var operators = this.get('operators');
 
@@ -47,6 +40,11 @@ App.calcController = Ember.ArrayController.extend({
       {
         var operator = token;
 
+        if (stack.length < 2) {
+          this.set('error', "Not enough numbers for operator: " + operator);
+          return;
+        }
+
         // get the left and right values for this operation from the stack
         var rightValue = Number(stack.pop());
         var leftValue = Number(stack.pop());
@@ -55,7 +53,8 @@ App.calcController = Ember.ArrayController.extend({
           // simply get the result from the function in our operators map
           var result = operators.get(operator)(leftValue, rightValue);
           if (isNaN(result)) {
-            // TODO: error - result is non-numeric
+            this.set('error', "Result was not a number: " + result);
+            return;
           } else {
             // create readable step string
             steps.push([
@@ -70,17 +69,20 @@ App.calcController = Ember.ArrayController.extend({
             stack.push(result);
           }
         } else {
-          // TODO: error - unknown operator
+          this.set('error', "Invalid operator: " + operator);
+          return;
         }
       }
     }
 
     if (stack.length > 1) {
-      // TODO: error, items left in stack, probably a too many numbers or operators
-      //       in expression
+      this.set('error', "Too many numbers for given operators");
+      return;
     }
     else if(stack.length === 0) {
-      // TODO: error, stack is empty, it should have the result in it
+      // this case shouldn't happen given our other error checks
+      this.set('error', "Answer was not calculated properly");
+      return;
     }
 
     this.set('solution', stack.pop());
@@ -141,7 +143,8 @@ App.calcController = Ember.ArrayController.extend({
       return leftValue - rightValue;
     });
     map.set('/', function(leftValue, rightValue) {
-      // TODO: should we throw an error for divide by zero?
+      // TODO: should we throw an error for divide by zero?  Currently returns
+      //       infinity, which is probably ok.
       return leftValue / rightValue;
     });
     map.set('*', function(leftValue, rightValue) {
