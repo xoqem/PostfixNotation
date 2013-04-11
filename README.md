@@ -3,10 +3,25 @@ PostfixNotation
 
 A JavaScript parser / calculator using postfix notation
 
+
 Known Issues:
 -------------
 
 1. jQuery evaluates the string "+2" as a numeric 2.  I'm actually ok with it denoting a positive number, as it is consistent with the negative sign being used to show negative numbers.  So, you can use the / or * immediately before a number, but the + and - will be treated as part of the number if not separated by white space.
+
+
+Project Structure
+-----------------
+
+This app was built using jQuery, Ember, Handlebars, and Twitter Bootstrap.  The javascript files are stored in the js folder and organized into folders for clarity.  The code from the app.js file runs first, and the remainder of the files are order independent.  The Handlebars templates can be found in the templates folder.
+
+The Grunt build process, described in more detail below, concats the application javacsript files into main.js, processes the templates into templates.js, and copies images, css, and html files and places them all in the tmp debug and release folders respectively.  During general development, I would typically run grunt watch, and just refresh the debug index page ocassionally.  For deployment, the build process also creates debug and release packages.
+
+
+Unit Tests
+----------
+
+The unit tests currently aren't integrated into the build process (because they required setting up PhantomJS and having more info about the build box, which seemed like overkill for this).  For now, you can run them by simply going to the test.html page (which is a sibling of the index.html page) in either the tmp/debug or tmp/release folders.
 
 
 Building:
@@ -22,19 +37,13 @@ Building:
 
     npm install -g grunt-cli
 
-4. Then run grunt to build project:
+4. Then run grunt to build the project:
 
     grunt
 
 5. Run the app by loading the index.html file in either tmp/debug or tmp/release.  Compressed release and debug packages can be found in the dist folder after building.
 
-Note: if you are running the app via file:// you'll need to update the index.html page to to have http:// in front of the link and script urls.  They only have // to play nicely with https or http.
-
-
-Unit Tests
-----------
-
-The unit tests currently aren't integrated into the build process.  For now, you can run them by simply going to the test.html page in either the tmp/debug or tmp/release folders.
+Note: if you are running the app via file:// you'll need to update the index.html and test.html pages to to have http:// in front of the link and script urls.  They only have // to play nicely with https or http.
 
 
 Credits:
