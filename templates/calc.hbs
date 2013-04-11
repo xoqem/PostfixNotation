@@ -6,4 +6,12 @@
     }}
     <button class="btn btn-primary" {{action "solveExpression" target="App.calcController"}}>Solve</button>
   </form>
+  <h1>{{App.calcController.solution}}</h1>
+  <hr>
+  Steps:<br/>
+  <ol>
+  {{#each App.calcController}}
+    <li>{{this}}</li>
+  {{/each}}
+  <ol>
 </div>
