@@ -1,7 +1,10 @@
 App.calcController = Ember.ArrayController.extend({
   content: null,
+
+  // expression - holds the postfix string, bound to the text field
   expression: null,
 
+  // solveExpression - solves the expression, executed when 'Solve' is clicked
   solveExpression: function() {
     var steps = [];
 
