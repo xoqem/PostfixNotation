@@ -46,7 +46,7 @@
       }
 
       function testSolveExpression(expression, expectedValue) {
-        test('my test', function () {
+        test('test App.calcController.solveExpression: ' + expression, function () {
           App.calcController.set('expression', expression);
           App.calcController.solveExpression();
           equal(App.calcController.get('solution'), expectedValue, expression);
