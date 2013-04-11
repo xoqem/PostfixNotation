@@ -3,6 +3,10 @@ PostfixNotation
 
 A JavaScript parser / calculator using postfix notation
 
+Known Issues:
+
+1. jQuery evaluates the string "+2" as a numeric 2.  I'm actually ok with it denoting a positive number, as it is consistent with the negative sign being used to show negative numbers.  So, you can use the / or * immediately before a number, but the + and - will be treated as part of the number if not separated by white space.
+
 
 Building:
 
