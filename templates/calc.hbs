@@ -9,7 +9,8 @@
 
   {{#if App.calcController.error}}
     <div class="alert alert-error">
-      {{App.calcController.error}}
+      The input expression <b>{{App.calcController.lastExpression}}</b> is invalid and cannot be parsed.<br/><br/>
+      Error: {{App.calcController.error}}
     </div>
   {{/if}}
 

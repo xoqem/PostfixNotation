@@ -3,8 +3,13 @@ App.calcController = Ember.ArrayController.extend({
   content: null,
   // expression - holds the postfix string, bound to the text field
   expression: null,
-  // solution - holds the answer, we bind a big label to this
+  // solution - holds the answer, bound to a big label
   solution: null,
+  // error - holds any error message, bound to an error box
+  error: null,
+  // lastExpression - the last attempted expression
+  lastExpression: null,
+
 
   // solveExpression - solves the expression, executed when 'Solve' is clicked
   solveExpression: function() {
@@ -13,6 +18,8 @@ App.calcController = Ember.ArrayController.extend({
     this.set('error', null);
 
     var expression = this.get('expression').trim();
+    this.set('lastExpression', expression);
+
     if (!expression) {
       this.set('error', "Please enter an expression");
       return;
