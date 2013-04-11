@@ -7,9 +7,11 @@
     <button class="btn btn-primary" {{action "solveExpression" target="App.calcController"}}>Solve</button>
   </form>
   <h1>{{App.calcController.solution}}</h1>
-  <hr>
-  Steps:<br/><br/>
-  {{#each App.calcController}}
-    {{code this}}<br/>
-  {{/each}}
+  {{#if App.calcController.length}}
+    <hr>
+    Steps:<br/><br/>
+    {{#each App.calcController}}
+      {{code this}}<br/>
+    {{/each}}
+  {{/if}}
 </div>
