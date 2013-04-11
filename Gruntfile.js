@@ -81,14 +81,6 @@ module.exports = function(grunt) {
         }
       }
     },
-    qunit: {
-      release: {
-        src: ['tmp/release/test.html']
-      },
-      debug: {
-        src: ['tmp/debug/test.html']
-      }
-    },
     uglify: {
       options: {
         banner: '<%= meta.banner %>'
@@ -141,7 +133,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-qunit');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-ember-templates');
