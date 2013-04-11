@@ -34,7 +34,7 @@ Note: if you are running the app via file:// you'll need to update the index.htm
 Unit Tests
 ----------
 
-The unit tests currently aren't integrated into the build process.  For now, you can run them by simply going to the test.html page in either the tmp/debug or tmp/releaes folders.
+The unit tests currently aren't integrated into the build process.  For now, you can run them by simply going to the test.html page in either the tmp/debug or tmp/release folders.
 
 
 Credits:
