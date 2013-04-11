@@ -8,10 +8,8 @@
   </form>
   <h1>{{App.calcController.solution}}</h1>
   <hr>
-  Steps:<br/>
-  <ol>
+  Steps:<br/><br/>
   {{#each App.calcController}}
-    <li>{{this}}</li>
+    {{code this}}<br/>
   {{/each}}
-  <ol>
 </div>

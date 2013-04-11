@@ -1,8 +1,9 @@
 App.calcController = Ember.ArrayController.extend({
+  // content - this will contain our solution steps, bound to an "each" block
   content: null,
-
   // expression - holds the postfix string, bound to the text field
   expression: null,
+  // solution - holds the answer, we bind a big label to this
   solution: null,
 
   // solveExpression - solves the expression, executed when 'Solve' is clicked
@@ -23,37 +24,48 @@ App.calcController = Ember.ArrayController.extend({
     // TODO: make sure to show an error message if the expression is invalid,
     //       probably determine this while solving
 
-    // TODO: make sure to store each step that is used to solve the problem
-
+    var i;
     var stack = [];
     var operators = this.get('operators');
-    var tokens = expression.split(' ');
-    for (var i = 0; i < tokens.length; i++)
+    // tokenize the expression on white space
+    var tokens = expression.split(/\s+/);
+    // while we have tokens, handle them
+    while (tokens.length)
     {
-      if ($.isNumeric(tokens[i])) {
-        stack.push(tokens[i]);
+      // get token from beginning of list
+      var token = tokens.shift();
+      console.log('Stack:', stack.join(","));
+      console.log('Token:', token);
+      // if our token is numeric, push it on the stack
+      if ($.isNumeric(token)) {
+        stack.push(token);
       }
+      // otherwise, our token must be an operator
       else
       {
+        var operator = token;
+
+        // get the left and right values for this operation from the stack
         var rightValue = Number(stack.pop());
         var leftValue = Number(stack.pop());
-        var operator = tokens[i];
-
+        console.log('rightValue:', rightValue);
+        console.log('leftValue:', leftValue);
+        // make sure we have a valid operator
         if (operators.has(operator)) {
+          // simply get the result from the function in our operators map
           var result = operators.get(operator)(leftValue, rightValue);
           if (isNaN(result)) {
             // TODO: error - result is non-numeric
           } else {
+            console.log('result:', result);
             // create readable step string
-            var stepString = [];
-            stepString.push(
+            steps.push([
               leftValue,
               operator,
               rightValue,
               "=",
               result
-            );
-            steps.push(stepString.join(" "));
+            ].join(" "));
 
             // push the result on the stack
             stack.push(result);
@@ -64,8 +76,6 @@ App.calcController = Ember.ArrayController.extend({
       }
     }
 
-
-
     if (stack.length > 1) {
       // TODO: error, items left in stack, probably a too many numbers or operators
       //       in expression
@@ -74,7 +84,24 @@ App.calcController = Ember.ArrayController.extend({
       // TODO: error, stack is empty, it should have the result in it
     }
 
-    this.set('solution', stack.pop());
+    var answer = stack.pop();
+
+    // format the steps array exatly as requested
+    steps.push([
+      "<b>Answer:</b> ",
+      answer
+    ].join(""));
+    for (i = 0; i < steps.length - 1; i++)
+    {
+      steps[i] = [
+        "<b>Step ",
+        i + 1,
+        ":</b> ",
+        steps[i]
+      ].join("");
+    }
+
+    this.set('solution', answer);
     this.set('content', steps);
   },
 
