@@ -12,7 +12,7 @@ App.calcController = Ember.ArrayController.extend({
     this.set('solution', null);
     this.set('error', null);
 
-    var expression = this.get('expression');
+    var expression = this.get('expression').trim();
     if (!expression) {
       this.set('error', "Please enter an expression");
       return;
