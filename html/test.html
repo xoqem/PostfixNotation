@@ -31,8 +31,18 @@
           testSolveExpression("6 8", null);
           testSolveExpression("3 5 + 3", null);
           testSolveExpression("4 5 +", 9);
-          testSolveExpression("6 2 /1 + 2 9 --", 11)
-          testSolveExpression("7 51 22*10 41 + / +", 29)
+          testSolveExpression("9 3 /", 3);
+          testSolveExpression("17 8 -", 9);
+          testSolveExpression("6 2 / 5 +", 8);
+          testSolveExpression("6 2 /1 + 2 9 --", 11);
+          testSolveExpression("7 51 22*10 41 + / +", 29);
+          testSolveExpression("4 5 7 2 + - *", -16);
+          testSolveExpression("3 4 + 2  * 7 /", 2);
+          testSolveExpression("5 7 + 6 2 -  * ", 48);
+          testSolveExpression("4 2 3 5 1 - + * +", 18);
+          testSolveExpression("4 2 + 3 5 1 -  * +", 18);
+          testSolveExpression("1 2 /", 0.5);
+          testSolveExpression("4 0 /", Infinity);
       }
 
       function testSolveExpression(expression, expectedValue) {
