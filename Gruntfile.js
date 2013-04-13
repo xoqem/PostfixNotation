@@ -6,7 +6,7 @@ module.exports = function(grunt) {
     meta: {
       version: '<%= pkg.version %>',
       banner_text: 'Postfix Notation v<%= meta.version %> - ' +
-        'https://github.com/sinfree/PostfixNotation - <%= grunt.template.today("isoDateTime") %>',
+        'https://github.com/xoqem/PostfixNotation - <%= grunt.template.today("isoDateTime") %>',
       banner: '/* <%= meta.banner_text %> */\n',
       html_banner: '<!-- <%= meta.banner_text %> -->\n'
     },
