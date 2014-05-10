@@ -1,26 +1,26 @@
 <div id="calc-view" class="rounded-corners">
   <form class="form-horizontal">
-    {{view App.ExpressionTextField class="input-xlarge"
+    {{view PostfixNotation.ExpressionTextField class="input-xlarge"
       placeholder="Enter postfix notation expression..."
-      valueBinding="App.calcController.expression"
+      valueBinding="PostfixNotation.calcController.expression"
     }}
-    <button class="btn btn-primary" {{action "solveExpression" target="App.calcController"}}>Solve</button>
+    <button class="btn btn-primary" {{action "solveExpression" target="PostfixNotation.calcController"}}>Solve</button>
   </form>
 
-  {{#if App.calcController.error}}
+  {{#if PostfixNotation.calcController.error}}
     <div class="alert alert-error">
-      The input expression <b>{{App.calcController.lastExpression}}</b> is invalid and cannot be parsed.<br/><br/>
-      Error: {{App.calcController.error}}
+      The input expression <b>{{PostfixNotation.calcController.lastExpression}}</b> is invalid and cannot be parsed.<br/><br/>
+      Error: {{PostfixNotation.calcController.error}}
     </div>
   {{/if}}
 
-  <h1>{{App.calcController.solution}}</h1>
-  {{#if App.stepController.length}}
+  <h1>{{PostfixNotation.calcController.solution}}</h1>
+  {{#if PostfixNotation.calcController.stepController.length}}
     <hr>
     Steps:<br/><br/>
-    {{#each App.stepController}}
+    {{#each PostfixNotation.calcController.stepController}}
       <b>Step {{index}}:</b> {{leftValue}} {{operator}} {{rightValue}} = {{result}}<br/>
     {{/each}}
-    <b>Answer:</b> {{App.calcController.solution}}
+    <b>Answer:</b> {{PostfixNotation.calcController.solution}}
   {{/if}}
 </div>

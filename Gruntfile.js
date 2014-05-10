@@ -37,23 +37,25 @@ module.exports = function(grunt) {
         src: ['css/**/*.css'],
         dest: 'tmp/debug/styles.css'
       },
-      js: {
+      index: {
         options: {
-          banner: '<%= meta.banner %>'
+          banner: '<%= meta.html_banner %>'
         },
-        src: ['js/**/*.js'],
-        dest: 'tmp/debug/main.js'
+        src: ['index.html'],
+        dest: 'tmp/debug/index.html'
+      },
+      test: {
+        options: {
+          banner: '<%= meta.html_banner %>'
+        },
+        src: ['test.html'],
+        dest: 'tmp/debug/test.html'
       }
     },
     copy: {
       images: {
         files: [
           {expand: true, cwd: 'images', src: ['**'], dest: 'tmp/debug/images/'}
-        ]
-      },
-      html: {
-        files: [
-          {expand: true, cwd: 'html', src: ['**'], dest: 'tmp/debug/'}
         ]
       },
       release: {
@@ -69,33 +71,34 @@ module.exports = function(grunt) {
         }
       }
     },
-    ember_templates: {
+    requirejs: {
       compile: {
         options: {
-          templateName: function(sourceFile) {
-            return sourceFile.replace(/templates\//, '');
-          }
-        },
-        files: {
-          "tmp/debug/templates.js": "templates/*.hbs",
+          name: 'main',
+          mainConfigFile: 'js/main.js',
+          out: 'tmp/debug/js/main.js',
+          paths: {
+            jquery: 'empty:',
+            handlebars: 'empty:',
+            ember: 'empty:'
+          },
+          exclude: ['jquery','handlebars', 'ember', 'text']
         }
       }
     },
     uglify: {
-      options: {
-        banner: '<%= meta.banner %>'
-      },
-      dist: {
-        files: {
-          'tmp/release/main.js': ['tmp/release/main.js']
-        }
+      release: {
+        files: [
+          {
+            expand: true,
+            cwd: 'tmp/release/js/',
+            src: ['**/*.js'],
+            dest: 'tmp/release/js/'
+          }
+        ]
       }
     },
     watch: {
-      templates: {
-        files: 'templates/*.hbs',
-        tasks: ['ember_templates']
-      },
       js: {
         files: 'js/**/*.js',
         tasks: ['jshint', 'concat:js']
@@ -119,8 +122,7 @@ module.exports = function(grunt) {
         globals: {
           $: false,
           App: true,
-          console: false,
-          Ember: false
+          console: false
         }
       }
     }
@@ -133,16 +135,20 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-ember-templates');
 
   // default task
-  grunt.registerTask('default', ['clean', 'jshint', 'concat', 'ember_templates', 'copy', 'uglify', 'cssmin', 'compress']);
+  grunt.registerTask('default', [
+    'clean',
+    'jshint',
+    'concat',
+    'requirejs',
+    'copy',
+    'uglify',
+    'cssmin',
+    'compress'
+  ]);
   grunt.registerTask('test', []);
-
-  // HACK: add sleep task that we call after compress, because grunt compress plugin is saying its done before the compress completes
-  grunt.registerTask('sleep', function() {
-    setTimeout(this.async(), 2000);
-  });
 };

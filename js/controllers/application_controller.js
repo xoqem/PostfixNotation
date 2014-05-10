@@ -1,1 +1,5 @@
-App.ApplicationController = Ember.ArrayController.extend();
+define([
+  'ember'
+], function(Ember) {
+  return Ember.Controller.extend();
+});
