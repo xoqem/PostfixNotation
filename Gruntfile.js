@@ -35,7 +35,7 @@ module.exports = function(grunt) {
           banner: '<%= meta.banner %>'
         },
         src: ['css/**/*.css'],
-        dest: 'tmp/debug/styles.css'
+        dest: 'tmp/debug/css/styles.css'
       },
       index: {
         options: {
@@ -56,6 +56,11 @@ module.exports = function(grunt) {
       images: {
         files: [
           {expand: true, cwd: 'images', src: ['**'], dest: 'tmp/debug/images/'}
+        ]
+      },
+      libs: {
+        files: [
+          {expand: true, cwd: 'libs', src: ['**'], dest: 'tmp/debug/libs/'}
         ]
       },
       release: {
