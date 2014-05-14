@@ -72,7 +72,7 @@ module.exports = function(grunt) {
     cssmin: {
       release: {
         files: {
-          "tmp/release/styles.css": ["tmp/release/styles.css"]
+          "tmp/release/css/styles.css": ["tmp/release/css/styles.css"]
         }
       }
     },
